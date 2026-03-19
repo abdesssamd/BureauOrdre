@@ -1,0 +1,238 @@
+:root {
+    --primary-color: #0f172a;    /* Bleu nuit (Barre du haut) */
+    --accent-color: #3b82f6;     /* Bleu action */
+    --success-color: #10b981;
+    --error-color: #ef4444;
+    --bg-body: #f1f5f9;          /* Gris fond */
+    --text-dark: #1e293b;
+    --text-gray: #64748b;
+    --white: #ffffff;
+    --navbar-height: 64px;       /* Hauteur de la barre */
+    --radius: 8px;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+    margin: 0;
+    /* On pousse le contenu vers le bas pour ne pas qu'il soit caché par la barre fixe */
+    padding-top: calc(var(--navbar-height) + 20px); 
+}
+
+/* =========================================
+   1. LA NAVBAR (Barre du Haut)
+   ========================================= */
+.navbar {
+    height: var(--navbar-height);
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Espace entre Gauche et Droite */
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+/* --- Partie GAUCHE (Logo + Menu) --- */
+.nav-left { display: flex; align-items: center; gap: 30px; }
+
+.brand { 
+    font-size: 1.3rem; 
+    font-weight: bold; 
+    display: flex; align-items: center; gap: 10px; 
+    color: white; 
+    text-decoration: none; 
+    white-space: nowrap;
+}
+
+.nav-links { display: flex; gap: 5px; }
+
+.nav-item {
+    color: #94a3b8; /* Gris clair */
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: 0.2s;
+    display: flex; align-items: center; gap: 8px;
+}
+
+.nav-item:hover { background: rgba(255,255,255,0.1); color: white; }
+.nav-item.active { background: var(--accent-color); color: white; }
+
+/* --- Partie DROITE (Notifs + Profil) --- */
+.nav-right { display: flex; align-items: center; gap: 20px; }
+
+/* Cloche Notification */
+.notif-btn { position: relative; color: white; font-size: 1.2rem; cursor: pointer; text-decoration: none; }
+.notif-btn:hover { color: var(--accent-color); }
+
+.badge-count {
+    position: absolute; top: -8px; right: -8px;
+    background: #ef4444; color: white; 
+    font-size: 0.65rem; font-weight: bold;
+    padding: 2px 5px; border-radius: 10px; 
+    border: 2px solid var(--primary-color);
+}
+
+/* Profil Utilisateur (Dropdown) */
+.user-menu { 
+    display: flex; align-items: center; gap: 10px; 
+    cursor: pointer; position: relative; padding: 5px;
+    border-radius: 30px; transition: 0.2s;
+}
+.user-menu:hover { background: rgba(255,255,255,0.05); }
+
+.user-info { text-align: right; line-height: 1.2; }
+.user-name { font-size: 0.9rem; font-weight: 600; display: block; }
+.user-role { font-size: 0.75rem; color: #94a3b8; display: block; text-transform: uppercase; }
+
+.user-avatar {
+    width: 38px; height: 38px; 
+    background: var(--accent-color); 
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; 
+    font-weight: bold; color: white; font-size: 0.9rem;
+    border: 2px solid rgba(255,255,255,0.2);
+}
+
+/* Le Menu Déroulant caché */
+.dropdown-menu {
+    display: none; /* Caché par défaut */
+    position: absolute; 
+    top: 100%; right: 0; 
+    margin-top: 10px;
+    background: white; 
+    color: var(--text-dark); 
+    border-radius: 8px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    width: 200px; 
+    overflow: hidden;
+    animation: fadeIn 0.2s ease;
+}
+
+/* Afficher le menu au survol */
+.user-menu:hover .dropdown-menu { display: block; }
+
+.dropdown-item { 
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 15px; 
+    text-decoration: none; 
+    color: var(--text-dark); 
+    font-size: 0.9rem;
+    transition: 0.2s; 
+    border-bottom: 1px solid #f1f5f9;
+}
+.dropdown-item:last-child { border-bottom: none; }
+.dropdown-item:hover { background: #f8fafc; color: var(--accent-color); }
+.dropdown-item.danger { color: var(--error-color); }
+.dropdown-item.danger:hover { background: #fee2e2; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================================
+   2. CONTENU & RESPONSIVE
+   ========================================= */
+.content-area {
+    max-width: 1200px; /* Centré et limité en largeur */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Responsive (Tablettes et Mobiles) */
+@media (max-width: 900px) {
+    .nav-links span { display: none; } /* On cache le texte des liens */
+    .user-info { display: none; }      /* On cache le nom, on garde l'avatar */
+    .nav-item { padding: 8px; }        /* Plus petit */
+}
+
+/* =========================================
+   3. COMPOSANTS (Gardés de l'ancien CSS)
+   ========================================= */
+/* Cartes */
+.upload-card, .recent-files, .stat-card { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+.upload-card { max-width: 800px; margin: 0 auto 20px auto; }
+
+/* Tableaux */
+.table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+.table th { text-align: left; padding: 12px; border-bottom: 2px solid #e2e8f0; color: var(--text-gray); font-size: 0.85rem; text-transform: uppercase; }
+.table td { padding: 12px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+.table tr:last-child td { border-bottom: none; }
+
+/* Boutons & Formulaires */
+.btn-primary { background: var(--accent-color); color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; }
+.btn-primary:hover { background: #2563eb; }
+.btn-sm { padding: 5px 10px; border-radius: 4px; font-size: 0.8rem; text-decoration: none; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; }
+.form-control { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 6px; box-sizing: border-box; }
+.form-group { margin-bottom: 15px; }
+
+/* Badges */
+.badge { padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: 600; display: inline-block; }
+
+/* Alertes */
+.alert { padding: 15px; border-radius: 8px; margin-bottom: 20px; }
+.alert.success { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.alert.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+
+
+/* --- GESTION DES MENUS DÉROULANTS (DROPDOWNS) --- */
+
+/* Conteneur principal (pour User ou Nav) */
+.has-dropdown { 
+    position: relative; 
+    cursor: pointer;
+}
+
+/* Le Menu caché */
+.dropdown-menu {
+    display: none; 
+    position: absolute; 
+    top: 100%; 
+    background: white; 
+    color: var(--text-dark); 
+    border-radius: 8px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    min-width: 200px; 
+    overflow: hidden;
+    z-index: 2000;
+    animation: fadeIn 0.2s ease;
+}
+
+/* Positionnement spécifique pour le menu Utilisateur (à droite) */
+.user-menu .dropdown-menu { right: 0; margin-top: 10px; }
+
+/* Positionnement spécifique pour la Navigation (à gauche) */
+.nav-item .dropdown-menu { left: 0; margin-top: 0; border-radius: 0 0 8px 8px; }
+
+/* Affichage au survol */
+.has-dropdown:hover .dropdown-menu { display: block; }
+.nav-item.has-dropdown:hover { background: rgba(255,255,255,0.1); border-radius: 6px 6px 0 0; }
+
+/* Items du menu */
+.dropdown-item { 
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 15px; 
+    text-decoration: none; 
+    color: var(--text-dark); 
+    font-size: 0.9rem;
+    transition: 0.2s; 
+    border-bottom: 1px solid #f1f5f9;
+}
+.dropdown-item:hover { background: #f8fafc; color: var(--accent-color); }
+.dropdown-item.danger { color: var(--error-color); }
+.dropdown-item.danger:hover { background: #fee2e2; }
+
+/* Petite flèche pour indiquer un menu déroulant */
+.fa-caret-down { margin-left: 5px; font-size: 0.8em; opacity: 0.7; }

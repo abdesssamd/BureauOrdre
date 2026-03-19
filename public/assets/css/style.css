@@ -1,0 +1,351 @@
+:root {
+    --primary-color: #0f172a;    /* Bleu nuit */
+    --accent-color: #3b82f6;     /* Bleu vif */
+    --success-color: #10b981;
+    --error-color: #ef4444;
+    --bg-body: #f1f5f9;          /* Gris clair */
+    --card-bg: #ffffff;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --white: #ffffff;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --navbar-height: 64px;       /* Hauteur du menu haut */
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-dark);
+    margin: 0;
+    padding: 0;
+    /* On pousse le contenu pour ne pas être caché par le menu fixe */
+    padding-top: calc(var(--navbar-height) + 20px); 
+    min-height: 100vh;
+}
+
+/* ============================================================
+   1. LA NAVBAR (NOUVEAU DESIGN - MENU HAUT)
+   ============================================================ */
+.navbar {
+    height: var(--navbar-height);
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.nav-left { display: flex; align-items: center; gap: 30px; }
+.brand { font-size: 1.3rem; font-weight: bold; display: flex; align-items: center; gap: 10px; color: white; text-decoration: none; }
+
+.nav-links { display: flex; gap: 5px; }
+.nav-item {
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    transition: 0.2s;
+    display: flex; align-items: center; gap: 8px;
+    position: relative;
+}
+.nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.15); color: white; }
+
+/* Partie Droite (User & Notif) */
+.nav-right { display: flex; align-items: center; gap: 20px; }
+
+/* Notifications */
+.notif-btn { position: relative; color: white; font-size: 1.2rem; cursor: pointer; }
+.badge-count {
+    position: absolute; top: -5px; right: -5px;
+    background: #ef4444; color: white; font-size: 0.7rem; font-weight: bold;
+    padding: 2px 5px; border-radius: 10px; border: 2px solid var(--primary-color);
+}
+
+/* Profil Utilisateur */
+.user-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; position: relative; }
+.user-avatar {
+    width: 36px; height: 36px; background: var(--accent-color); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; font-weight: bold; color: white;
+}
+.user-info { text-align: right; line-height: 1.2; }
+.user-name { font-size: 0.9rem; font-weight: 600; display: block; }
+.user-role { font-size: 0.75rem; color: #94a3b8; display: block; text-transform: uppercase; }
+
+/* --- GESTION DES MENUS DÉROULANTS (User & Nav) --- */
+/* --- GESTION DES MENUS DÉROULANTS (User, Nav & Notifs) --- */
+.has-dropdown { 
+    position: relative; 
+    height: 100%; /* Important pour coller au bas de la barre */
+    display: flex; 
+    align-items: center;
+}
+
+/* Le Menu caché */
+.dropdown-menu {
+    display: none; 
+    position: absolute; 
+    top: 100%; /* Collé juste en dessous */
+    margin-top: 0; /* CORRECTION : PAS D'ESPACE VIDE ! */
+    background: white; 
+    color: var(--text-dark); 
+    border-radius: 0 0 8px 8px; /* Arrondi seulement en bas */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    min-width: 220px; 
+    z-index: 2000;
+    border-top: 3px solid var(--accent-color); /* Petite ligne de couleur pour le style */
+}
+
+/* Affichage au survol */
+.has-dropdown:hover .dropdown-menu { display: block; }
+
+/* Positionnement */
+.nav-left .dropdown-menu { left: 0; }
+.nav-right .dropdown-menu { right: 0; left: auto; } /* Pour User et Notif */
+
+/* Items du menu */
+.dropdown-item { 
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 15px; 
+    text-decoration: none; color: var(--text-dark); 
+    font-size: 0.9rem; transition: 0.2s; 
+    border-bottom: 1px solid #f1f5f9;
+}
+.dropdown-item:hover { background: #f8fafc; color: var(--accent-color); }
+.dropdown-item.danger { color: var(--error-color); }
+.dropdown-item.danger:hover { background: #fee2e2; }
+
+/* --- STYLE SPÉCIFIQUE NOTIFICATIONS --- */
+.notif-dropdown { min-width: 320px; padding: 0; } /* Plus large pour les notifs */
+.notif-title { 
+    padding: 10px 15px; background: #f8fafc; 
+    font-weight: bold; border-bottom: 1px solid #e2e8f0; 
+    font-size: 0.85rem; color: var(--text-gray);
+}
+.notif-row { 
+    display: block; padding: 12px 15px; 
+    text-decoration: none; border-bottom: 1px solid #f1f5f9; 
+    transition: 0.2s; 
+}
+.notif-row:hover { background: #f1f5f9; }
+.notif-row.unread { background: #eff6ff; border-left: 3px solid var(--accent-color); }
+.notif-row p { margin: 0; font-size: 0.9rem; color: var(--text-dark); line-height: 1.4; }
+.notif-row small { color: var(--text-gray); font-size: 0.75rem; }
+.notif-footer { text-align: center; padding: 10px; font-size: 0.85rem; }
+/* ============================================================
+   2. CONTENU PRINCIPAL (Adapté pour Navbar)
+   ============================================================ */
+.content-area {
+    /* Plus de margin-left car plus de sidebar */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .nav-links span { display: none; } /* Cacher texte menu sur tablette */
+    .user-info { display: none; }
+}
+
+/* ============================================================
+   3. RESTAURATION DU DESIGN DES PAGES (VOTRE ANCIEN CSS)
+   ============================================================ */
+
+/* Typography */
+h1 {
+    font-size: 1.8rem; color: var(--primary-color);
+    margin-bottom: 1.5rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem;
+}
+h2 { font-size: 1.4rem; color: var(--text-dark); margin-top: 2rem; }
+
+/* Cartes (Dashboard, Upload, etc.) */
+.upload-card, .stat-card, .recent-files {
+    background: var(--card-bg);
+    padding: 2.5rem; /* Remis comme avant */
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 20px;
+}
+.upload-card { max-width: 800px; margin: 0 auto 20px auto; text-align: center; }
+.recent-files { padding: 1.5rem; }
+
+/* Stats Grid (Tableau de bord) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+.stat-card { padding: 1.5rem; display: flex; align-items: center; justify-content: space-between; }
+.stat-info h3 { margin: 0; font-size: 0.9rem; color: var(--text-light); font-weight: 500; }
+.stat-info p { margin: 5px 0 0 0; font-size: 1.8rem; font-weight: bold; color: var(--primary-color); }
+.stat-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+.icon-blue { background: #e0f2fe; color: #0284c7; }
+.icon-green { background: #dcfce7; color: #16a34a; }
+.icon-purple { background: #dbeafe; color: #1d4ed8; }
+.icon-orange { background: #ffedd5; color: #ea580c; }
+
+/* Zone de Drag & Drop (Upload & Scan) */
+.drop-zone {
+    border: 2px dashed #cbd5e1; border-radius: var(--radius);
+    padding: 3rem 1rem; margin-bottom: 1.5rem;
+    transition: all 0.3s ease; cursor: pointer; background: #f8fafc;
+}
+.drop-zone:hover { border-color: var(--accent-color); background: #eff6ff; transform: translateY(-2px); }
+.drop-zone i { color: var(--accent-color); margin-bottom: 1rem; }
+
+/* Tableaux */
+.table { width: 100%; border-collapse: collapse; margin-top: 1rem; background:white; }
+.table th, .table td { padding: 1rem; text-align: left; border-bottom: 1px solid #e2e8f0; }
+.table th { font-weight: 600; color: var(--text-light); font-size: 0.9rem; background: #f8fafc; }
+
+/* Formulaires & Boutons */
+.form-group { text-align: left; margin-bottom: 1.5rem; }
+.form-control { width: 100%; padding: 0.75rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 1rem; margin-top: 0.5rem; box-sizing:border-box; }
+
+.btn-primary {
+    background-color: var(--primary-color); color: white; padding: 0.8rem 2rem;
+    border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.3s;
+    text-decoration: none; display: inline-block;
+}
+.btn-primary:hover { background-color: #1e293b; box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2); }
+
+.btn-sm {
+    padding: 6px 12px; border-radius: 6px; font-size: 0.85rem; 
+    text-decoration: none; display: inline-block; margin-right: 5px; cursor: pointer;
+}
+
+/* Alertes & Badges */
+.alert { padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-weight: 500; }
+.alert.success { background-color: #d1fae5; color: #065f46; border: 1px solid #34d399; }
+.alert.error { background-color: #fee2e2; color: #991b1b; border: 1px solid #f87171; }
+.badge { padding: 4px 10px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+
+/* --- MODAL (Visionneur) --- */
+.modal {
+    display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+}
+.modal-content {
+    background-color: #fefefe; margin: 2vh auto; padding: 0; border: 1px solid #888;
+    width: 90%; max-width: 800px; height: 90vh; border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3); display: flex; flex-direction: column;
+    animation: slideDown 0.3s ease-out;
+}
+@keyframes slideDown { from {transform: translateY(-50px); opacity: 0;} to {transform: translateY(0); opacity: 1;} }
+.modal-header { padding: 15px 20px; background: var(--primary-color); color: white; display: flex; justify-content: space-between; align-items: center; border-radius: 12px 12px 0 0; }
+.modal-body { flex: 1; padding: 0; overflow: hidden; background: #f1f5f9; position: relative; display: flex; justify-content: center; align-items: center; }
+.close-btn { color: white; font-size: 28px; font-weight: bold; cursor: pointer; }
+.viewer-iframe { width: 100%; height: 100%; border: none; }
+.viewer-img { max-width: 100%; max-height: 95%; object-fit: contain; }
+
+/* --- NOTIFICATIONS --- */
+.notif-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; }
+.notif-item { background: white; padding: 15px; margin-bottom: 10px; border-radius: 8px; border-left: 4px solid #cbd5e1; display: flex; gap: 15px; align-items: start; transition: all 0.2s;}
+.notif-item:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+.notif-item.unread { background: #eff6ff; border-left-color: var(--primary-color); }
+.notif-icon { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+.notif-icon.share { background: #dbeafe; color: #1e40af; }
+.notif-icon.upload { background: #dcfce7; color: #166534; }
+.notif-icon.system { background: #fef3c7; color: #b45309; }
+.notif-content { flex: 1; }
+.notif-title { font-weight: 600; margin-bottom: 5px; font-size: 15px; }
+.notif-message { color: #64748b; font-size: 14px; margin-bottom: 8px; }
+.notif-time { font-size: 12px; color: #94a3b8; }
+.notif-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+
+/* =========================================
+   SUPPORT ARABE (RTL)
+   ========================================= */
+
+/* Quand la page est en mode RTL (Arabe) */
+[dir="rtl"] body {
+    font-family: 'Segoe UI', 'Arial', sans-serif; /* Polices déjà installées sur Windows */
+    direction: rtl;
+    text-align: right;
+}
+
+/* Inversion des marges dans la Navbar */
+[dir="rtl"] .nav-left { margin-left: 30px; margin-right: 0; }
+[dir="rtl"] .nav-item { gap: 8px; }
+
+/* Inversion des icônes dropdown */
+[dir="rtl"] .fa-caret-down { margin-right: 5px; margin-left: 0; }
+
+/* Inversion des menus déroulants */
+[dir="rtl"] .nav-item .dropdown-menu { 
+    left: auto; 
+    right: 0; 
+}
+[dir="rtl"] .user-menu .dropdown-menu {
+    right: auto;
+    left: 0;
+}
+
+/* Inversion des Tableaux */
+[dir="rtl"] .table th, [dir="rtl"] .table td {
+    text-align: right; /* Aligner le texte à droite */
+}
+
+/* Inversion des Formulaires */
+[dir="rtl"] .form-group { text-align: right; }
+[dir="rtl"] .user-info { text-align: left; } /* Nom utilisateur */
+
+/* Police Arabe (Import Google Fonts) */
+
+
+
+/* =========================================
+   DARK MODE (MODE SOMBRE)
+   ========================================= */
+body.dark-mode {
+    background-color: #0f172a; /* Fond très sombre */
+    color: #e2e8f0;            /* Texte clair */
+}
+
+/* Adapter les cartes en mode sombre */
+body.dark-mode .upload-card, 
+body.dark-mode .recent-files, 
+body.dark-mode .stat-card,
+body.dark-mode .dropdown-menu,
+body.dark-mode .table,
+body.dark-mode .modal-content {
+    background-color: #1e293b; /* Gris nuit */
+    color: #f1f5f9;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    border: 1px solid #334155;
+}
+
+/* Adapter les tableaux */
+body.dark-mode .table th {
+    background-color: #0f172a;
+    color: #94a3b8;
+    border-bottom: 1px solid #334155;
+}
+body.dark-mode .table td,
+body.dark-mode .dropdown-item {
+    border-color: #334155;
+    color: #e2e8f0;
+}
+body.dark-mode .dropdown-item:hover {
+    background-color: #334155;
+}
+
+/* Adapter les inputs */
+body.dark-mode .form-control {
+    background-color: #0f172a;
+    border-color: #334155;
+    color: white;
+}

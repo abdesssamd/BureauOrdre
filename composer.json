@@ -1,0 +1,17 @@
+{
+    "name": "pc/gestion_fichiers",
+    "autoload": {
+        "psr-4": {
+            "Pc\\GestionFichiers\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "abdesssamd",
+            "email": "abdessamad.kherbouche@gmail.com"
+        }
+    ],
+    "require": {
+        "thiagoalessio/tesseract_ocr": "^2.13"
+    }
+}

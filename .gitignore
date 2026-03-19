@@ -1,0 +1,32 @@
+﻿# Environment
+.env
+.env.*
+!.env.example
+
+# Dependencies
+vendor/
+
+# User data / runtime
+uploads/*
+!uploads/.gitkeep
+*.log
+sql/debug.log
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# IDE / OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Binaries / installers
+*.exe
+!scan-setup (1).exe
+!gs10060w64.exe
+
+# Temp / backup
+*~
+*.tmp
+*.bak
