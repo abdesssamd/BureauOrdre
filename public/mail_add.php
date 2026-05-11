@@ -104,14 +104,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['ajax_add_contact'])) 
                 $extracted_text = null;
                 $ocr_status = 'pending';
 
-                if (in_array($ext, ['jpg', 'jpeg', 'png', 'tif'])) {
+                // FIX v2.0: OCR sur images ET PDFs, avec score de confiance
+                $ocr_confidence = null;
+                if (in_array($ext, ['jpg', 'jpeg', 'png', 'tif', 'tiff', 'pdf'])) {
                     $ocr_helper = '../includes/ocr_helper.php';
                     if (file_exists($ocr_helper)) {
                         require_once $ocr_helper;
-                        $text_result = extractTextFromFile($full_path);
-                        if (!empty($text_result) && strlen($text_result) > 5) {
+                        $ocr_result = extractTextWithMeta($full_path);
+                        $text_result    = $ocr_result['text'] ?? null;
+                        $ocr_confidence = $ocr_result['confidence'] ?? null;
+                        if (!empty($text_result) && mb_strlen($text_result) > 5) {
                             $extracted_text = $text_result;
-                            $ocr_status = 'done';
+                            $ocr_status = ($ocr_confidence !== null && $ocr_confidence < 35)
+                                ? 'low_confidence'
+                                : 'done';
                         }
                     }
                 }

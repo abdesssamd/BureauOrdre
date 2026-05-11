@@ -1,0 +1,50 @@
+# ══════════════════════════════════════════════════════
+# gestion_fichiers — Dépendances OCR v3.0
+# ══════════════════════════════════════════════════════
+#
+# INSTALLATION COMPLÈTE (recommandée) :
+#   pip install -r requirements_ocr.txt
+#
+# INSTALLATION MINIMALE (sans TrOCR manuscrit) :
+#   pip install easyocr opencv-python-headless pillow
+#
+# ── Obligatoire ───────────────────────────────────────
+easyocr>=1.7.1
+opencv-python-headless>=4.9.0
+Pillow>=10.0.0
+numpy>=1.26.0
+
+# ── TrOCR — OCR manuscrit (recommandé, ~400-1400 MB) ──
+# Téléchargement automatique au premier lancement.
+# Le modèle est mis en cache dans ~/.cache/huggingface/
+#
+# Option A : CPU seulement (plus lent, ~3-8 sec/page)
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.35.0
+
+# Option B : GPU NVIDIA (plus rapide, ~0.5-1 sec/page)
+# Décommentez et remplacez les lignes torch ci-dessus par :
+# torch>=2.0.0+cu118  --index-url https://download.pytorch.org/whl/cu118
+# torchvision>=0.15.0+cu118  --index-url https://download.pytorch.org/whl/cu118
+# transformers>=4.35.0
+
+# ── Optionnel ─────────────────────────────────────────
+pytesseract>=0.3.10  # Fallback si EasyOCR/TrOCR échouent
+python-dateutil>=2.9.0
+
+# ══════════════════════════════════════════════════════
+# UTILISATION DEPUIS PHP (ocr_helper.php) :
+#
+# Mode automatique (détection manuscrit/imprimé) :
+#   python ocr.py image.jpg --json
+#
+# Forcer manuscrit (TrOCR) :
+#   python ocr.py lettre.jpg --json --force-handwritten
+#
+# Forcer imprimé (EasyOCR) :
+#   python ocr.py facture.jpg --json --force-printed
+#
+# Modèle TrOCR large (plus précis, 1.4GB) :
+#   python ocr.py lettre.jpg --json --force-handwritten --trocr-model large
+# ══════════════════════════════════════════════════════

@@ -94,8 +94,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !isset($_POST['ajax_add_contact'])) 
                 $ocr_helper = '../includes/ocr_helper.php';
                 if (file_exists($ocr_helper)) {
                     require_once $ocr_helper;
-                    $extracted_text = extractTextFromImage($target_dir . $unique_name);
-                    if (empty($extracted_text) || strlen($extracted_text) < 5) { $extracted_text = null; }
+                    // FIX v2.0: extractTextFromImage n'existait pas — remplacé par extractTextWithMeta
+                    $ocr_result     = extractTextWithMeta($target_dir . $unique_name);
+                    $extracted_text = $ocr_result['text'] ?? null;
+                    if (empty($extracted_text) || mb_strlen($extracted_text) < 5) {
+                        $extracted_text = null;
+                    }
                 }
 
                 $sql_file = "INSERT INTO files (original_name, stored_name, mime_type, size, owner_id, department_id, visibility, file_size, ocr_content) 

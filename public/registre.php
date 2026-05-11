@@ -37,14 +37,21 @@ $offset = ($current_page - 1) * $items_per_page;
 
 // Compte total
 $sql_count = "SELECT COUNT(*) as total FROM mails m 
+              LEFT JOIN contacts c ON m.contact_id = c.id
               LEFT JOIN files f ON m.file_id = f.id 
               WHERE m.type = ? ";
 $params_count = [$current_tab];
 
 if (!empty($_GET['keyword'])) {
-    $sql_count .= " AND (UPPER(m.reference_no) LIKE ? OR UPPER(m.object) LIKE ? OR UPPER(m.external_ref) LIKE ? OR UPPER(f.ocr_content) LIKE ?)";
+    $sql_count .= " AND (
+        UPPER(m.reference_no) LIKE ?
+        OR UPPER(m.object) LIKE ?
+        OR UPPER(m.external_ref) LIKE ?
+        OR UPPER(COALESCE(c.name, '')) LIKE ?
+        OR UPPER(COALESCE(f.ocr_content, '')) LIKE ?
+    )";
     $term = "%" . mb_strtoupper($_GET['keyword'], 'UTF-8') . "%";
-    array_push($params_count, $term, $term, $term, $term);
+    array_push($params_count, $term, $term, $term, $term, $term);
 }
 if (!empty($_GET['contact_id'])) { $sql_count .= " AND m.contact_id = ?"; $params_count[] = $_GET['contact_id']; }
 if (!empty($_GET['date_start'])) { $sql_count .= " AND m.mail_date >= ?"; $params_count[] = $_GET['date_start']; }
@@ -64,9 +71,15 @@ $sql = "SELECT m.*, c.name as contact_name, f.stored_name, f.original_name, f.id
 $params = [$current_tab];
 
 if (!empty($_GET['keyword'])) {
-    $sql .= " AND (UPPER(m.reference_no) LIKE ? OR UPPER(m.object) LIKE ? OR UPPER(m.external_ref) LIKE ? OR UPPER(f.ocr_content) LIKE ?)";
+    $sql .= " AND (
+        UPPER(m.reference_no) LIKE ?
+        OR UPPER(m.object) LIKE ?
+        OR UPPER(m.external_ref) LIKE ?
+        OR UPPER(COALESCE(c.name, '')) LIKE ?
+        OR UPPER(COALESCE(f.ocr_content, '')) LIKE ?
+    )";
     $term = "%" . mb_strtoupper($_GET['keyword'], 'UTF-8') . "%";
-    array_push($params, $term, $term, $term, $term);
+    array_push($params, $term, $term, $term, $term, $term);
 }
 if (!empty($_GET['contact_id'])) { $sql .= " AND m.contact_id = ?"; $params[] = $_GET['contact_id']; }
 if (!empty($_GET['date_start'])) { $sql .= " AND m.mail_date >= ?"; $params[] = $_GET['date_start']; }

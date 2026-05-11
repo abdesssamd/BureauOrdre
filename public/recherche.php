@@ -31,16 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['search'])) {
     
     $params = [];
 
-    // 1. Filtre Mots-clÃ©s (RÃ©f, Objet, RÃ©f Externe, ET CONTENU OCR)
+    // 1. Filtre Mots-clÃ©s (RÃ©f, Objet, RÃ©f Externe, Organisme, Contenu OCR)
     if (!empty($_GET['keyword'])) {
-        // AJOUT DE : OR f.ocr_content LIKE ?
-        $sql .= " AND (m.reference_no LIKE ? OR m.object LIKE ? OR m.external_ref LIKE ? OR f.ocr_content LIKE ?)";
+        $sql .= " AND (m.reference_no LIKE ? OR m.object LIKE ? OR m.external_ref LIKE ? OR c.name LIKE ? OR f.ocr_content LIKE ?)";
         
         $keyword = "%" . $_GET['keyword'] . "%";
         $params[] = $keyword;
         $params[] = $keyword;
         $params[] = $keyword;
-        $params[] = $keyword; // On ajoute le paramÃ¨tre une 4Ã¨me fois pour l'OCR
+        $params[] = $keyword;
+        $params[] = $keyword;
     }
 
     // 2. Filtre Type (ArrivÃ©e / DÃ©part)
